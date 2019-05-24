@@ -1,0 +1,81 @@
+#ifndef TYPES_HPP
+#define TYPES_HPP
+
+#define BOTTOM_LINE_SIZE 3
+
+#define SPACE_SYMBOL			0x0020			// see UNICODE table
+#define BOUNDARY_SYMBOL			0x0023			// see UNICODE table
+#define OBJECT_SYMBOL			0x004F			// see UNICODE table
+
+#define BOUNDARY_SIZE			1
+
+#define GAME_FIELD_X_SIZE		15
+#define GAME_FIELD_Y_SIZE		19
+
+#define STATUS_FIELD_X_SIZE		5
+#define STATUS_FIELD_Y_SIZE		GAME_FIELD_Y_SIZE
+
+#define SCORE_FIELD_X_SIZE		(GAME_FIELD_X_SIZE+BOUNDARY_SIZE+STATUS_FIELD_X_SIZE)
+#define SCORE_FIELD_Y_SIZE		3
+
+#define GAME_FIELD_X_START		BOUNDARY_SIZE
+#define GAME_FIELD_X_FINISH		(GAME_FIELD_X_START + GAME_FIELD_X_SIZE - 1)
+#define GAME_FIELD_Y_START		BOUNDARY_SIZE
+#define GAME_FIELD_Y_FINISH		(GAME_FIELD_Y_START + GAME_FIELD_Y_SIZE - 1)
+
+#define STATUS_FIELD_X_START	(GAME_FIELD_X_FINISH + BOUNDARY_SIZE + 1)
+#define STATUS_FIELD_X_FINISH	(STATUS_FIELD_X_START + STATUS_FIELD_X_SIZE - 1)
+#define STATUS_FIELD_Y_START	BOUNDARY_SIZE
+#define STATUS_FIELD_Y_FINISH	(STATUS_FIELD_Y_START + STATUS_FIELD_Y_SIZE - 1)
+
+#define SCORE_FIELD_X_START		GAME_FIELD_X_START
+#define SCORE_FIELD_X_FINISH	STATUS_FIELD_X_FINISH
+#define SCORE_FIELD_Y_START		(GAME_FIELD_Y_FINISH + BOUNDARY_SIZE + 1)
+#define SCORE_FIELD_Y_FINISH	(SCORE_FIELD_Y_START + SCORE_FIELD_Y_SIZE - 1)
+
+#define MAIN_WINDOWS_X_SIZE (3*BOUNDARY_SIZE+GAME_FIELD_X_SIZE+STATUS_FIELD_X_SIZE-1)
+#define MAIN_WINDOWS_Y_SIZE (3*BOUNDARY_SIZE+GAME_FIELD_Y_SIZE+SCORE_FIELD_Y_SIZE-1)
+
+#define FULL_LINE_X (GAME_FIELD_X_SIZE*OBJECT_SYMBOL)
+
+typedef vector< vector < int > > Item;
+
+namespace NTetris {
+	enum E_BUTTONS {
+		A_Button =		97 ,
+		S_Button =		115,
+		D_Button =		100,
+		Left_Button =	75,
+		Right_Button =	77,
+		Down_Button =	80,
+		Spase_Button =	32,
+		Auto_Button =	0
+	};
+
+	enum E_FIG_TYPE {
+		POINT =			0
+		, LINE =		1
+		, SQUARE =		2
+		, S_FIGURE =	3
+		, Z_FIGURE =	4
+		, T_FIGURE =	5
+		, L_FIGURE =	6
+		, J_FIGURE =	7
+	};
+
+	enum E_ORIENTATION {
+		UP =			0
+		, DOWN =		1
+		, LEFT =		2
+		, RIGHT =		3
+	};
+
+	struct T_OBJECT {
+		E_FIG_TYPE type;
+		E_ORIENTATION orientation;
+		uint8_t posX;
+		uint8_t posY;
+		Item mItem;
+	};
+} // end namespace NTetris
+#endif // TYPES_HPP

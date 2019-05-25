@@ -44,6 +44,7 @@ void Tetris::KeyPressed(int btnCode)
 		break;
 	case NTetris::Spase_Button:
 		//orientation
+		rotate();
 		break;
 	default:
 		//
@@ -70,6 +71,8 @@ void Tetris::UpdateF(float deltaTime)
 		moveObject();
 		mObjectOld = mObject;
     }
+	//moveObject();
+	//mObjectOld = mObject;
 }
 
 //-----------------------------------------------------------------------------
@@ -163,18 +166,32 @@ void Tetris::printLine(const uint8_t x1, const uint8_t y1, const uint8_t x2, con
 void Tetris::moveObject()
 //-----------------------------------------------------------------------------
 {
+	wipeOffItem(mObjectOld);
 	//drawItem(mObjectOld);
-	//drawItem(mObject);
-	SetChar(mObjectOld.posX, mObjectOld.posY, SPACE_SYMBOL);
-	SetChar(mObject.posX, mObject.posY, OBJECT_SYMBOL);
+	drawItem(mObject);
+	//SetChar(mObjectOld.posX, mObjectOld.posY, SPACE_SYMBOL);
+	//SetChar(mObject.posX, mObject.posY, OBJECT_SYMBOL);
 }
 
 //-----------------------------------------------------------------------------
 bool Tetris::checkCollision()
 //-----------------------------------------------------------------------------
 {
-	return (mObject.posY == GAME_FIELD_Y_FINISH) 
-			|| (GetChar(mObject.posX, mObject.posY + 1) == OBJECT_SYMBOL);
+	/*return (mObject.posY == GAME_FIELD_Y_FINISH)
+			|| (GetChar(mObject.posX, mObject.posY + 1) == OBJECT_SYMBOL);*/
+			wipeOffItem(mObjectOld);
+	NTetris::T_OBJECT tempObject = mObject;
+	tempObject.posY++;
+	for (uint8_t y = 0; y < tempObject.mItem.size(); ++y) {
+		for (uint8_t x = 0; x < tempObject.mItem.size(); ++x) {
+			if (tempObject.mItem[y][x] == OBJECT_SYMBOL) {
+				if (GetChar(tempObject.posX + x, tempObject.posY + y) != SPACE_SYMBOL) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -182,24 +199,29 @@ void Tetris::processingCollision()
 //-----------------------------------------------------------------------------
 {
 	moveObject();
-	checkFullLine();
+	checkFullLine(mObject.mItem.size());
 	changeCurrentObject();
 	mPressedButtonS = false;
 }
 
 //-----------------------------------------------------------------------------
-void Tetris::checkFullLine()
+void Tetris::checkFullLine(uint8_t size)
 //-----------------------------------------------------------------------------
-{
-	uint16_t sum = 0;
-	for (uint8_t i = GAME_FIELD_X_START; i <= GAME_FIELD_X_FINISH; ++i) {
-		sum += GetChar(i, mObject.posY);
+{	
+	while (size > 0)
+	{
+		uint16_t sum = 0;
+		for (uint8_t i = GAME_FIELD_X_START; i <= GAME_FIELD_X_FINISH; ++i) {
+			sum += GetChar(i, mObject.posY + size - 1);
+		}
+		if (sum >= FULL_LINE_X) {
+			changeScore();
+			clearLine(mObject.posY + size - 1);
+			//makeLinesOffset(mObject.posY + size - 1);
+		}
+		size--;
 	}
-	if (sum >= FULL_LINE_X) {
-		changeScore();
-		clearLine(mObject.posY);
-		makeLinesOffset(mObject.posY);
-	}
+	
 }
 
 //-----------------------------------------------------------------------------
@@ -283,7 +305,7 @@ void Tetris::changeScore()
 void Tetris::checkOverrun()
 //-----------------------------------------------------------------------------
 {
-	if (mObject.posX < GAME_FIELD_X_START) {
+	/*if (mObject.posX < GAME_FIELD_X_START) {
 		mObject.posX = GAME_FIELD_X_START;
 	}
 	else if (mObject.posX >= GAME_FIELD_X_FINISH) {
@@ -291,7 +313,11 @@ void Tetris::checkOverrun()
 	}
 	if (mObject.posY >= GAME_FIELD_Y_FINISH) {
 		mObject.posY = GAME_FIELD_Y_FINISH;
+	}*/
+	if (hasCollisions()) {
+		mObject = mObjectOld;
 	}
+		
 }
 
 //-----------------------------------------------------------------------------
@@ -339,8 +365,11 @@ void Tetris::drawItem(const NTetris::T_OBJECT& object)
 //-----------------------------------------------------------------------------
 {
 	for (uint8_t y = 0; y < object.mItem.size(); ++y) {
-		for (uint8_t x = 0; x < object.mItem.size(); ++x){			
-				SetChar(object.posX + x, object.posY + y, object.mItem[y][x]);			
+		for (uint8_t x = 0; x < object.mItem.size(); ++x)
+		{
+			if (object.mItem[y][x] == OBJECT_SYMBOL) {
+				SetChar(object.posX + x, object.posY + y, object.mItem[y][x]);
+		}
 			}
 	}
 }
@@ -370,6 +399,23 @@ void Tetris::rotate()
 		}
 	}
 	mObject.mItem = tempItem;
+}
+
+//-----------------------------------------------------------------------------
+bool Tetris::hasCollisions()
+//-----------------------------------------------------------------------------
+{
+	wipeOffItem(mObjectOld);
+	for (uint8_t y = 0; y < mObject.mItem.size(); ++y) {
+		for (uint8_t x = 0; x < mObject.mItem.size(); ++x) {
+			if (mObject.mItem[y][x] == OBJECT_SYMBOL) {
+				if (GetChar(mObject.posX + x, mObject.posY + y) != SPACE_SYMBOL) {					
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 //-----------------------------------------------------------------------------

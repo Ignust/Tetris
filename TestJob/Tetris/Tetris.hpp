@@ -35,7 +35,7 @@ private:
 	void generateNextObject();
 	void changeCurrentObject();
 	void moveObject();
-	void checkFullLine();
+	void checkFullLine(uint8_t size);
 	void clearLine(const uint8_t y);
 	void makeLinesOffset(const uint8_t y);
 	
@@ -45,6 +45,7 @@ private:
 	void drawItem(const NTetris::T_OBJECT& object);
 	void wipeOffItem(const NTetris::T_OBJECT& object);
 	void rotate();
+	bool hasCollisions();
 
 
 	void printLinesForTesting();

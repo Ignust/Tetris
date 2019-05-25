@@ -5,7 +5,6 @@
 #include "./GameDevClasses/BaseApp.h"
 #include "./tools/Types.hpp"
 
-//typedef vector< vector < int > > Item;
 
 class Tetris : public BaseApp
 {
@@ -41,14 +40,17 @@ private:
 	
 	void checkGameOver();
 	void checkOverrun();
-	Item generateRandom();
+	Item generateItem(NTetris::E_FIG_TYPE ) const;
 	void drawItem(const NTetris::T_OBJECT& object);
 	void wipeOffItem(const NTetris::T_OBJECT& object);
 	void rotate();
 	bool hasCollisions();
+	uint16_t findSumOfLine(uint8_t y);
+	NTetris::E_FIG_TYPE getRandomType() const;
+	void changeOrientation();
 
 
-	void printLinesForTesting();
+	void printLinesForTesting();// Test
 	
 
 private:
@@ -57,7 +59,6 @@ private:
 	NTetris::T_OBJECT mObjectOld;
 	bool mPressedButtonS;
 	float mDelayTime;
+	float mLastRotateTime;
 	uint32_t mScore;
-	//Item mItem;
-	
 };

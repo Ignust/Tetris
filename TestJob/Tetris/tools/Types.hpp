@@ -37,6 +37,10 @@
 #define MAIN_WINDOWS_Y_SIZE (3*BOUNDARY_SIZE+GAME_FIELD_Y_SIZE+SCORE_FIELD_Y_SIZE-1)
 
 #define FULL_LINE_X (GAME_FIELD_X_SIZE*OBJECT_SYMBOL)
+#define EMPTY_LINE_X (GAME_FIELD_X_SIZE*SPACE_SYMBOL)
+
+#define TIME_AUTO_SHIFT (1)
+#define TIME_BETWEEN_ROTATES (0.2)
 
 typedef vector< vector < int > > Item;
 
@@ -53,20 +57,20 @@ namespace NTetris {
 	};
 
 	enum E_FIG_TYPE {
-		POINT =			0
-		, LINE =		1
-		, SQUARE =		2
-		, S_FIGURE =	3
-		, Z_FIGURE =	4
-		, T_FIGURE =	5
-		, L_FIGURE =	6
-		, J_FIGURE =	7
+		 LINE =			0
+		, SQUARE =		1
+		, S_FIGURE =	2
+		, Z_FIGURE =	3
+		, T_FIGURE =	4
+		, L_FIGURE =	5
+		, J_FIGURE =	6
+		, LAST_FIGURE = 7
 	};
 
 	enum E_ORIENTATION {
 		UP =			0
-		, DOWN =		1
-		, LEFT =		2
+		, LEFT =		1
+		, DOWN =		2
 		, RIGHT =		3
 	};
 

@@ -58,6 +58,7 @@ private:
 	NTetris::T_OBJECT mNextObject;
 	NTetris::T_OBJECT mObjectOld;
 	bool mPressedButtonS;
+	bool mPressedButtonSpase;
 	float mDelayTime;
 	float mLastRotateTime;
 	uint32_t mScore;

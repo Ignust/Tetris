@@ -12,6 +12,7 @@ Tetris::Tetris()
 	, mNextObject()
 	, mObjectOld()
 	, mPressedButtonS(false)
+	, mPressedButtonSpase(false)
 	, mDelayTime(0)
 	, mLastRotateTime(0)
 	, mScore(0)	
@@ -46,6 +47,7 @@ void Tetris::KeyPressed(int btnCode)
 		if (mDelayTime - mLastRotateTime > TIME_BETWEEN_ROTATES) {
 			mLastRotateTime = mDelayTime;
 			rotate();
+			mPressedButtonSpase = true;
 		}
 		break;
 	default:
@@ -63,7 +65,7 @@ void Tetris::UpdateF(float deltaTime)
 	mDelayTime += deltaTime;
 	if (mPressedButtonS) {
 		KeyPressed(NTetris::Auto_Button);
-	} else if (mDelayTime > TIME_AUTO_SHIFT) {
+	} else if (mDelayTime > TIME_AUTO_SHIFT && mPressedButtonSpase == false) {
 		KeyPressed(NTetris::Auto_Button);
 		mDelayTime = 0;
 		mLastRotateTime = 0;
@@ -74,6 +76,7 @@ void Tetris::UpdateF(float deltaTime)
 		moveObject();
 		mObjectOld = mObject;
     }
+	mPressedButtonSpase = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -333,6 +336,7 @@ Item Tetris::generateItem(NTetris::E_FIG_TYPE figure) const
 			{OBJECT_SYMBOL, OBJECT_SYMBOL, SPACE_SYMBOL},}),
 	};
 	return randomItem[figure];
+	//return randomItem[S_FIGURE];
 }
 
 //-----------------------------------------------------------------------------
@@ -366,8 +370,11 @@ void Tetris::wipeOffItem(const NTetris::T_OBJECT& object)
 void Tetris::rotate()
 //-----------------------------------------------------------------------------
 {
-	if (mObject.type == NTetris::LINE && mObject.orientation == NTetris::LEFT) {
-		mObject.mItem = generateItem(NTetris::LINE);
+	if ((mObject.type == NTetris::LINE
+		|| mObject.type == NTetris::S_FIGURE
+		|| mObject.type == NTetris::Z_FIGURE)
+		&& mObject.orientation == NTetris::LEFT) {
+		mObject.mItem = generateItem(mObject.type);
 		mObject.orientation = NTetris::UP;
 	}
 	else {

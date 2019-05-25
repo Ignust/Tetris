@@ -5,7 +5,7 @@
 
 #define SPACE_SYMBOL			0x0020			// see UNICODE table
 #define BOUNDARY_SYMBOL			0x0023			// see UNICODE table
-#define OBJECT_SYMBOL			0x004F			// see UNICODE table
+#define OBJECT_SYMBOL			0x2612//0x004F			// see UNICODE table
 
 #define BOUNDARY_SIZE			1
 

@@ -40,7 +40,7 @@
 #define EMPTY_LINE_X (GAME_FIELD_X_SIZE*SPACE_SYMBOL)
 
 #define TIME_AUTO_SHIFT (1)
-#define TIME_BETWEEN_ROTATES (0.2)
+#define TIME_BETWEEN_ROTATES (0.1)
 
 typedef vector< vector < int > > Item;
 

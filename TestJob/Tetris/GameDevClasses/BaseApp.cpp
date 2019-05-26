@@ -73,7 +73,7 @@ void BaseApp::SetChar(int x, int y, wchar_t c)
 
 wchar_t BaseApp::GetChar(int x, int y)
 {
-	return mChiBuffer[x + (X_SIZE+1)*y].Char.AsciiChar;
+	return mChiBuffer[x + (X_SIZE+1)*y].Char.UnicodeChar;
 }
 
 void BaseApp::Render()

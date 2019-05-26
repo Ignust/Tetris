@@ -45,7 +45,7 @@ private:
 	void wipeOffItem(const NTetris::T_OBJECT& object);
 	void rotate();
 	bool hasCollisions();
-	uint16_t findSumOfLine(uint8_t y);
+	uint32_t findSumOfLine(uint8_t y);
 	NTetris::E_FIG_TYPE getRandomType() const;
 	void changeOrientation();
 

@@ -408,12 +408,12 @@ bool Tetris::hasCollisions()
 }
 
 //-----------------------------------------------------------------------------
-uint16_t Tetris::findSumOfLine(uint8_t y)
+uint32_t Tetris::findSumOfLine(uint8_t y)
 //-----------------------------------------------------------------------------
 {
-	uint16_t sum = 0;
+	uint32_t sum = 0;
 	for (uint8_t x = GAME_FIELD_X_START; x <= GAME_FIELD_X_FINISH; ++x) {
-		sum += GetChar(x, y);
+		sum += (GetChar(x, y));
 	}
 	return sum;
 }

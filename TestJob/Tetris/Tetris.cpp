@@ -18,9 +18,9 @@ Tetris::Tetris()
 	, mScore(0)	
 //-----------------------------------------------------------------------------
 {
+	initFields();
 	generateNextObject();
 	changeCurrentObject();
-	initFields();
 }
 
 //-----------------------------------------------------------------------------
@@ -121,7 +121,19 @@ void Tetris::printGameField()
 //-----------------------------------------------------------------------------
 {
 	printRectangleBoudary(GAME_FIELD_X_START, GAME_FIELD_Y_START, GAME_FIELD_X_FINISH, GAME_FIELD_Y_FINISH);
+	initGameField();
 	//printLinesForTesting();
+}
+
+//-----------------------------------------------------------------------------
+void Tetris::initGameField()
+//-----------------------------------------------------------------------------
+{
+	for (uint8_t y = GAME_FIELD_Y_START; y <= GAME_FIELD_Y_SIZE; ++y) {
+		for (uint8_t x = GAME_FIELD_X_START; x <= GAME_FIELD_X_SIZE; ++x) {
+			SetChar(x,y, SPACE_SYMBOL);
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -360,7 +372,13 @@ void Tetris::wipeOffItem(const NTetris::T_OBJECT& object)
 	for (uint8_t y = 0; y < object.mItem.size(); ++y) {
 		for (uint8_t x = 0; x < object.mItem.size(); ++x) {
 			if (object.mItem[y][x] == OBJECT_SYMBOL) {
-				SetChar(object.posX + x, object.posY + y, SPACE_SYMBOL);
+				if (object.posX + x >= STATUS_FIELD_X_START) {
+					SetChar(object.posX + x, object.posY + y, OBJECT_EMPTY);
+				}
+				else {
+					SetChar(object.posX + x, object.posY + y, SPACE_SYMBOL);
+				}
+				
 			}
 		}
 	}

@@ -19,6 +19,7 @@ private:
 
 	void initFields();
 	void printGameField();
+	void initGameField();
 	void printStatusField();
 	void printScoreField();
 	void printRectangleBoudary(const uint8_t x1, const uint8_t y1, const uint8_t x2, const uint8_t  y2);

@@ -3,9 +3,10 @@
 
 #define BOTTOM_LINE_SIZE 3
 
-#define SPACE_SYMBOL			0x0020			// see UNICODE table
+#define SPACE_SYMBOL			0x002E			// see UNICODE table 
 #define BOUNDARY_SYMBOL			0x0023			// see UNICODE table
 #define OBJECT_SYMBOL			0x260A			// see UNICODE table
+#define OBJECT_EMPTY			0x0020			// see UNICODE table
 
 #define BOUNDARY_SIZE			1
 

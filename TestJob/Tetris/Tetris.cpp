@@ -346,6 +346,8 @@ Item Tetris::generateItem(NTetris::E_FIG_TYPE figure) const
 			{SPACE_SYMBOL, OBJECT_SYMBOL, SPACE_SYMBOL},
 			{SPACE_SYMBOL, OBJECT_SYMBOL, SPACE_SYMBOL},
 			{OBJECT_SYMBOL, OBJECT_SYMBOL, SPACE_SYMBOL},}),
+		Item({
+			{OBJECT_SYMBOL}}),
 	};
 	return randomItem[figure];
 	//return randomItem[S_FIGURE];

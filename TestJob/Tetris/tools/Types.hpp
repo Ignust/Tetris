@@ -65,7 +65,8 @@ namespace NTetris {
 		, T_FIGURE =	4
 		, L_FIGURE =	5
 		, J_FIGURE =	6
-		, LAST_FIGURE = 7
+		, POINT =		7
+		, LAST_FIGURE = 8
 	};
 
 	enum E_ORIENTATION {

@@ -15,7 +15,8 @@ Tetris::Tetris()
 	, mPressedButtonSpase(false)
 	, mDelayTime(0)
 	, mLastRotateTime(0)
-	, mScore(0)	
+	, mScore(0)
+	, mNextSymbolY(SPACE_SYMBOL)
 //-----------------------------------------------------------------------------
 {
 	initFields();
@@ -42,6 +43,7 @@ void Tetris::KeyPressed(int btnCode)
         break;
 	case NTetris::Auto_Button:
 		++mObject.posY;
+		return;
 		break;
 	case NTetris::Spase_Button:
 		if (mDelayTime - mLastRotateTime > TIME_BETWEEN_ROTATES) {
@@ -70,6 +72,7 @@ void Tetris::UpdateF(float deltaTime)
 		mDelayTime = 0;
 		mLastRotateTime = 0;
 	}
+
     if (checkCollision()) {
 		processingCollision();
     } else {
@@ -98,9 +101,10 @@ void Tetris::changeCurrentObject()
 //-----------------------------------------------------------------------------
 {
 	checkGameOver();
+	mNextSymbolY = GetChar(mObject.posX, mObject.posY + mObject.mItem.size());
 
 	mObject = mNextObject;
-	mObject.posX = GAME_FIELD_X_START+GAME_FIELD_X_FINISH/2;
+	mObject.posX = GAME_FIELD_X_START+GAME_FIELD_X_FINISH/2 - 1;
 	mObject.posY = GAME_FIELD_Y_START;
 
 	mObjectOld = mObject;
@@ -122,7 +126,7 @@ void Tetris::printGameField()
 {
 	printRectangleBoudary(GAME_FIELD_X_START, GAME_FIELD_Y_START, GAME_FIELD_X_FINISH, GAME_FIELD_Y_FINISH);
 	initGameField();
-	//printLinesForTesting();
+	printLinesForTesting();
 }
 
 //-----------------------------------------------------------------------------
@@ -182,28 +186,56 @@ void Tetris::printLine(const uint8_t x1, const uint8_t y1, const uint8_t x2, con
 void Tetris::moveObject()
 //-----------------------------------------------------------------------------
 {
-	wipeOffItem(mObjectOld);
+	if (mObject.type == NTetris::POINT && mNextSymbolY == SPACE_SYMBOL) {
+		wipeOffItem(mObjectOld);
+	}
+	else
+	{
+		wipeOffItem(mObjectOld);
+	}
 	drawItem(mObject);
+	mNextSymbolY = GetChar(mObject.posX, mObject.posY + mObject.mItem.size());
+
 }
 
 //-----------------------------------------------------------------------------
 bool Tetris::checkCollision()
 //-----------------------------------------------------------------------------
 {
-	wipeOffItem(mObjectOld);
+	//wipeOffItem(mObjectOld);
 
-	NTetris::T_OBJECT tempObject = mObject;
-	++tempObject.posY;
-	for (uint8_t y = 0; y < tempObject.mItem.size(); ++y) {
-		for (uint8_t x = 0; x < tempObject.mItem.size(); ++x) {
-			if (tempObject.mItem[y][x] == OBJECT_SYMBOL) {
-				if (GetChar(tempObject.posX + x, tempObject.posY + y) != SPACE_SYMBOL) {
-					return true;
+	if (mObject.type == NTetris::POINT) {
+		return checkCollisionForPoint();
+	}
+	else
+	{
+		wipeOffItem(mObjectOld);
+		NTetris::T_OBJECT tempObject = mObject;
+		++tempObject.posY;
+		for (uint8_t y = 0; y < tempObject.mItem.size(); ++y) {
+			for (uint8_t x = 0; x < tempObject.mItem.size(); ++x) {
+				if (tempObject.mItem[y][x] == OBJECT_SYMBOL) {
+					if (GetChar(tempObject.posX + x, tempObject.posY + y) != SPACE_SYMBOL) {
+						return true;
+					}
 				}
 			}
 		}
 	}
+	
 	return false;
+}
+
+//-----------------------------------------------------------------------------
+bool Tetris::checkCollisionForPoint()
+//-----------------------------------------------------------------------------
+{
+	for (uint8_t y = GAME_FIELD_Y_FINISH; y > mObject.posY; --y) {
+		if (GetChar(mObject.posX, y) == SPACE_SYMBOL) {
+			return false;
+		}
+	}
+	return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -349,8 +381,8 @@ Item Tetris::generateItem(NTetris::E_FIG_TYPE figure) const
 		Item({
 			{OBJECT_SYMBOL}}),
 	};
-	return randomItem[figure];
-	//return randomItem[S_FIGURE];
+	//return randomItem[figure];
+	return randomItem[NTetris::POINT];
 }
 
 //-----------------------------------------------------------------------------
@@ -442,9 +474,12 @@ uint32_t Tetris::findSumOfLine(uint8_t y)
 NTetris::E_FIG_TYPE Tetris::getRandomType() const
 //-----------------------------------------------------------------------------
 {
+	return NTetris::POINT;
+	/*
 	srand(time(0));
 	int rand = std::rand() % NTetris::LAST_FIGURE;
 	return static_cast<NTetris::E_FIG_TYPE> (rand);
+	*/
 }
 
 //-----------------------------------------------------------------------------
@@ -475,13 +510,15 @@ void Tetris::printLinesForTesting()
 //-----------------------------------------------------------------------------
 {
 	const uint8_t empty_X_place = 8;
-	const uint8_t numberOfLinesY = 6;
+	const uint8_t numberOfLinesY = 17;
 	for (uint8_t i = GAME_FIELD_Y_FINISH; i >= GAME_FIELD_Y_FINISH- numberOfLinesY; --i) {
 		for (uint8_t j = GAME_FIELD_X_START; j <= GAME_FIELD_X_SIZE; ++j) {
-			SetChar(j, i, OBJECT_SYMBOL);
+			if (i % 2) {
+				SetChar(j, i, OBJECT_SYMBOL);
+			}
 		}
 	}
-
+	
 	for (uint8_t i = GAME_FIELD_Y_FINISH; i >= GAME_FIELD_Y_FINISH - numberOfLinesY; --i) {
 		SetChar(empty_X_place, i, SPACE_SYMBOL);
 	}

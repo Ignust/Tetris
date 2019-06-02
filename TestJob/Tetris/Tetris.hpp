@@ -30,6 +30,7 @@ private:
 	void printScore();
 
 	bool checkCollision();
+	bool checkCollisionForPoint();
 	void processingCollision();
 
 	void generateNextObject();
@@ -63,4 +64,5 @@ private:
 	float mDelayTime;
 	float mLastRotateTime;
 	uint32_t mScore;
+	wchar_t mNextSymbolY;
 };

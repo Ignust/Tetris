@@ -1,8 +1,0 @@
-﻿  Tetris.cpp
-d:\test\c++\microsoft vs\testjob\tetris\tetris.cpp(202): warning C4267: аргумент: преобразование из "size_t" в "uint8_t"; возможна потеря данных
-d:\test\c++\microsoft vs\testjob\tetris\tetris.cpp(259): warning C4267: инициализация: преобразование из "size_t" в "uint8_t"; возможна потеря данных
-d:\test\c++\microsoft vs\testjob\tetris\tetris.cpp(259): warning C4267: инициализация: преобразование из "size_t" в "const uint8_t"; возможна потеря данных
-d:\test\c++\microsoft vs\testjob\tetris\tetris.cpp(276): warning C4267: инициализация: преобразование из "size_t" в "uint8_t"; возможна потеря данных
-d:\test\c++\microsoft vs\testjob\tetris\tetris.cpp(276): warning C4267: инициализация: преобразование из "size_t" в "const uint8_t"; возможна потеря данных
-d:\test\c++\microsoft vs\testjob\tetris\tetris.cpp(358): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  Tetris.vcxproj -> D:\Test\C++\Microsoft VS\Tetris\Tetris\Debug\Tetris.exe
